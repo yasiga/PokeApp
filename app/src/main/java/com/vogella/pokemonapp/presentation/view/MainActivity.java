@@ -1,4 +1,4 @@
-package com.vogella.pokemonapp;
+package com.vogella.pokemonapp.presentation.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,9 +12,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.vogella.pokemonapp.Constants;
+import com.vogella.pokemonapp.R;
+import com.vogella.pokemonapp.data.PokeApi;
+import com.vogella.pokemonapp.presentation.model.Pokemon;
+import com.vogella.pokemonapp.presentation.model.RestPokemonResponse;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

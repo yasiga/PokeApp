@@ -1,4 +1,4 @@
-package com.vogella.pokemonapp;
+package com.vogella.pokemonapp.presentation.model;
 
 import java.util.List;
 

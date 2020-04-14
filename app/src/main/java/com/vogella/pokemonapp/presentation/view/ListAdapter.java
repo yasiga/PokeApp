@@ -1,16 +1,17 @@
-package com.vogella.pokemonapp;
+package com.vogella.pokemonapp.presentation.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.vogella.pokemonapp.R;
+import com.vogella.pokemonapp.presentation.model.Pokemon;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<Pokemon> values;
