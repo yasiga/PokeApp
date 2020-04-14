@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.vogella.pokemonapp.Constants;
 import com.vogella.pokemonapp.R;
+import com.vogella.pokemonapp.Singletons;
 import com.vogella.pokemonapp.data.PokeApi;
 import com.vogella.pokemonapp.presentation.controller.MainController;
 import com.vogella.pokemonapp.presentation.model.Pokemon;
@@ -44,10 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         controller = new MainController(
                 this,
-            new GsonBuilder()
-                    .setLenient()
-                    .create(),
-            getSharedPreferences("application_esiea", Context.MODE_PRIVATE)
+            Singletons.getGson(),
+            Singletons.getSharedPreferencesInstance(getApplicationContext())
         );
         controller.onStart();
     }
