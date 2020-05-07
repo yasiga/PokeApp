@@ -12,7 +12,7 @@ import com.example.pokemon.R;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_first_page);
+            setContentView(R.layout.menu);
         }
 
         public void pokemon_list_activity(View view) {
