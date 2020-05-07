@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
 
                 Fragment detailFragment = PokeDetail.getInstance();
-                int position = intent.getIntExtra("position",-1);
+                String num = intent.getStringExtra("num");
                 Bundle bundle = new Bundle();
-                bundle.putInt("position",position);
+                bundle.putString("num",num);
                 detailFragment.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -39,12 +39,11 @@ public class MainActivity extends AppCompatActivity {
                         R.anim.enter_left_to_right, R.anim.exit_left_to_right);
                 fragmentTransaction.show(detailFragment);
 
-
                 fragmentTransaction.replace(R.id.list_pokemon_fragment,detailFragment);
                 fragmentTransaction.addToBackStack("detail");
                 fragmentTransaction.commitAllowingStateLoss();
 
-                Pokemon pokemon = Constant.commonPokemonList.get(position);
+                Pokemon pokemon = Constant.findPokemonByNum(num);
                 toolbar.setTitle(pokemon.getName());
             }
         }

@@ -45,7 +45,7 @@ public class PokeListAdapter extends RecyclerView.Adapter<PokeListAdapter.MyView
             public void onClick(View view, int position) {
                Toast.makeText(context,"Hey,it's :"+pokemonList.get(position).getName(), Toast.LENGTH_LONG).show();
                 LocalBroadcastManager.getInstance(context)
-                        .sendBroadcast(new Intent(Constant.KEY_ENABLE_HOME).putExtra("position",position));
+                        .sendBroadcast(new Intent(Constant.KEY_ENABLE_HOME).putExtra("num",pokemonList.get(position).getNum()));
             }
         });
     }

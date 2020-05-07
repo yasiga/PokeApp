@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +15,14 @@ import com.example.pokemon.Controller.Adapter.PokeListAdapter;
 import com.example.pokemon.Controller.Common.Constant;
 import com.example.pokemon.Controller.Common.ItemOffsetDecoration;
 import com.example.pokemon.Model.Pokedex;
+import com.example.pokemon.Model.Pokemon;
 import com.example.pokemon.R;
 import com.example.pokemon.Controller.Data.IPokeApi;
 import com.example.pokemon.Controller.Data.Singletons;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -31,6 +38,13 @@ public class PokemonList extends Fragment {
     IPokeApi iPokemonDex;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView pokemon_list_recyclerview;
+
+    PokeListAdapter search_adapter;
+    PokeListAdapter adapter;
+    List<String> last_suggest = new ArrayList<>();
+
+    MaterialSearchBar searchBar;
+
     static PokemonList instance;
 
     public static PokemonList getInstance() {
@@ -54,9 +68,68 @@ public class PokemonList extends Fragment {
         ItemOffsetDecoration itemOffsetDecoration = new ItemOffsetDecoration(getActivity(),R.dimen.spacing);
         pokemon_list_recyclerview.addItemDecoration(itemOffsetDecoration);
 
+        //searchbar
+        searchBar = (MaterialSearchBar)view.findViewById(R.id.search_bar);
+        searchBar.setHint("Search your Pokemon");
+        searchBar.setCardViewElevation(10);
+        searchBar.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                List<String> suggest = new ArrayList<>();
+                for(String search:last_suggest)
+                {
+                    if(search.toLowerCase().contains(searchBar.getText().toLowerCase()))
+                        suggest.add(search);
+                }
+                searchBar.setLastSuggestions(suggest);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                if(!enabled)
+                    pokemon_list_recyclerview.setAdapter(adapter);
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                startSearch(text);
+
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
+
         fetchData();
         return view;
     }
+
+    private void startSearch(CharSequence text) {
+        if(Constant.commonPokemonList.size() > 0)
+        {
+            List<Pokemon> result = new ArrayList<>();
+            for(Pokemon pokemon:Constant.commonPokemonList)
+            if(pokemon.getName().toLowerCase().contains(text.toString().toLowerCase()))
+                result.add(pokemon);
+            search_adapter = new PokeListAdapter(getActivity(),result);
+            pokemon_list_recyclerview.setAdapter(search_adapter);
+        }
+    }
+
+
 
     private void fetchData() {
         compositeDisposable.add(iPokemonDex.getListPokemon()
@@ -66,8 +139,15 @@ public class PokemonList extends Fragment {
                     @Override
                     public void accept(Pokedex pokedex) throws Exception {
                         Constant.commonPokemonList = pokedex.getPokemon();
-                        PokeListAdapter adapter = new PokeListAdapter(getActivity(), Constant.commonPokemonList);
+                        adapter = new PokeListAdapter(getActivity(), Constant.commonPokemonList);
                         pokemon_list_recyclerview.setAdapter(adapter);
+                        last_suggest.clear();
+                        adapter.notifyDataSetChanged();
+                        for(Pokemon pokemon:Constant.commonPokemonList)
+                            last_suggest.add(pokemon.getName());
+                        searchBar.setVisibility(View.VISIBLE);
+                        searchBar.setLastSuggestions(last_suggest);
+
                     }
                 })
         );
