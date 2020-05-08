@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                         R.anim.enter_left_to_right, R.anim.exit_left_to_right);
                 fragmentTransaction.show(detailFragment);
 
+
                 fragmentTransaction.replace(R.id.list_pokemon_fragment,detailFragment);
                 fragmentTransaction.addToBackStack("detail");
                 fragmentTransaction.commitAllowingStateLoss();

@@ -43,7 +43,7 @@ public class PokeListAdapter extends RecyclerView.Adapter<PokeListAdapter.MyView
         holder.setiItemClickListener(new iClickListener() {
             @Override
             public void onClick(View view, int position) {
-               Toast.makeText(context,"Hey,it's :"+pokemonList.get(position).getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Hey, it's "+pokemonList.get(position).getName(), Toast.LENGTH_LONG).show();
                 LocalBroadcastManager.getInstance(context)
                         .sendBroadcast(new Intent(Constant.KEY_ENABLE_HOME).putExtra("num",pokemonList.get(position).getNum()));
             }

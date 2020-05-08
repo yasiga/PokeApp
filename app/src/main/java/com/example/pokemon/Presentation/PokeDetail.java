@@ -42,7 +42,6 @@ public class PokeDetail extends Fragment {
         View itemView = inflater.inflate(R.layout.fragment_pokemon_detail, container, false);
         Pokemon pokemon = Constant.findPokemonByNum(getArguments().getString("num"));
 
-
         pokemon_img = (ImageView)itemView.findViewById(R.id.pokemon_image);
         pokemon_name = (TextView)itemView.findViewById(R.id.name);
         pokemon_candy_name = (TextView)itemView.findViewById(R.id.candy);

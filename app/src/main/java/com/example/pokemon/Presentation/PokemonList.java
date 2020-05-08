@@ -68,6 +68,7 @@ public class PokemonList extends Fragment {
         ItemOffsetDecoration itemOffsetDecoration = new ItemOffsetDecoration(getActivity(),R.dimen.spacing);
         pokemon_list_recyclerview.addItemDecoration(itemOffsetDecoration);
 
+
         //searchbar
         searchBar = (MaterialSearchBar)view.findViewById(R.id.search_bar);
         searchBar.setHint("Search your Pokemon");
@@ -75,9 +76,7 @@ public class PokemonList extends Fragment {
         searchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 List<String> suggest = new ArrayList<>();
@@ -86,32 +85,31 @@ public class PokemonList extends Fragment {
                     if(search.toLowerCase().contains(searchBar.getText().toLowerCase()))
                         suggest.add(search);
                 }
+
                 searchBar.setLastSuggestions(suggest);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
+
         searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
                 if(!enabled)
                     pokemon_list_recyclerview.setAdapter(adapter);
             }
-
             @Override
             public void onSearchConfirmed(CharSequence text) {
                 startSearch(text);
-
             }
-
             @Override
             public void onButtonClicked(int buttonCode) {
 
             }
         });
+
 
         fetchData();
         return view;
@@ -122,14 +120,12 @@ public class PokemonList extends Fragment {
         {
             List<Pokemon> result = new ArrayList<>();
             for(Pokemon pokemon:Constant.commonPokemonList)
-            if(pokemon.getName().toLowerCase().contains(text.toString().toLowerCase()))
-                result.add(pokemon);
+                if(pokemon.getName().toLowerCase().contains(text.toString().toLowerCase()))
+                    result.add(pokemon);
             search_adapter = new PokeListAdapter(getActivity(),result);
             pokemon_list_recyclerview.setAdapter(search_adapter);
         }
     }
-
-
 
     private void fetchData() {
         compositeDisposable.add(iPokemonDex.getListPokemon()
@@ -141,13 +137,13 @@ public class PokemonList extends Fragment {
                         Constant.commonPokemonList = pokedex.getPokemon();
                         adapter = new PokeListAdapter(getActivity(), Constant.commonPokemonList);
                         pokemon_list_recyclerview.setAdapter(adapter);
+
                         last_suggest.clear();
                         adapter.notifyDataSetChanged();
                         for(Pokemon pokemon:Constant.commonPokemonList)
                             last_suggest.add(pokemon.getName());
                         searchBar.setVisibility(View.VISIBLE);
                         searchBar.setLastSuggestions(last_suggest);
-
                     }
                 })
         );
